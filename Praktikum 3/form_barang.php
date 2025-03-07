@@ -3,62 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <title>Form Belanja Online</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 </head>
-<body>
-<div class="container mt-5">
-    <h2>Belanja Online</h2>
-    <form method="POST" action="form_belanja.php">
-        <div class="form-group">
-            <label for="customer">Customer</label>
-            <input type="text" class="form-control" id="customer" name="customer" required>
-        </div>
-        <div class="form-group">
-            <label for="produk">Pilih Produk</label><br>
-            <input type="radio" id="tv" name="produk" value="TV" required>
-            <label for="tv">TV (Rp. 4.200.000)</label><br>
-            <input type="radio" id="kulkas" name="produk" value="KULKAS">
-            <label for="kulkas">Kulkas (Rp. 3.100.000)</label><br>
-            <input type="radio" id="mesin_cuci" name="produk" value="MESIN CUCI">
-            <label for="mesin_cuci">Mesin Cuci (Rp. 3.800.000)</label><br>
-        </div>
-        <div class="form-group">
-            <label for="jumlah">Jumlah</label>
-            <input type="number" class="form-control" id="jumlah" name="jumlah" required min="1">
-        </div>
-        <button type="submit" class="btn btn-primary" name="proses">Kirim</button>
-    </form>
-
-    <?php
-    // Menangkap data
-    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        $customer = $_POST['customer'];
-        $produk = $_POST['produk'];
-        $jumlah = $_POST['jumlah'];
-
-        // Menentukan harga produk
-        $harga_produk = 0;
-        if ($produk == "TV") {
-            $harga_produk = 4200000;
-        } elseif ($produk == "KULKAS") {
-            $harga_produk = 3100000;
-        } elseif ($produk == "MESIN CUCI") {
-            $harga_produk = 3800000;
+<style>
+        body {
+            font-family: sans-serif;
         }
+</style>
+<body>
+    <div class="container mt-4">
+        <h2 class="text-center">Belanja Online</h2><hr>
+        <br>
+        <form method="post">
+            <div class="form-group row">
+                <label for="customer" class="col-2 col-form-label"><strong>Customer</strong></label>
+                <div class="col-6">
+                    <input type="text" name="customer" id="customer" class="form-control" placeholder="Nama Customer" required>
+                </div>
+            </div>
+            <br>
+            <div class="form-group row">
+            <label class="col-2"><strong>Pilih Produk</strong></label>
+            <div class="col-8">
+                <div class="custom-control custom-radio custom-control-inline">
+                    <input class="custom-control-input" type="radio" name="produk" value="TV" required>
+                    <label class="custom-control-label">TV</label>
+                </div>
+                <div class="custom-control custom-radio custom-control-inline">
+                    <input class="custom-control-input" type="radio" name="produk" value="Kulkas" required>
+                    <label class="custom-control-label">Kulkas</label>
+                </div>
+                <div class="custom-control custom-radio custom-control-inline">
+                    <input class="custom-control-input" type="radio" name="produk" value="Mesin Cuci" required>
+                    <label class="custom-control-label">Mesin Cuci</label>
+                </div>
+            </div>
+    </div>
+    <br>
+    <div class="form-group row">
+        <label for="jumlah" class="col-2 col-form-label"><strong>Jumlah</strong></label>
+        <div class="col-2">
+            <input type="number" name="jumlah" id="jumlah" class="form-control" min="1" placeholder="Jumlah" required>
+        </div>
+    </div>
+    <br>
+    <div class="form-group row">
+        <div class="offset-2 col-8">
+            <button style="background-color: green;" type="submit" name="submit" class="btn btn-primary">Kirim</button>
+        </div>
+    </div>
+    <br>
+</form><hr>
+<br>
+<?php
+if (isset($_POST['submit'])) {
+    $customer = $_POST['customer'];
+    $produk = $_POST['produk'];
+    $jumlah = (int)$_POST['jumlah'];
 
-        // Menghitung total belanja
-        $total_belanja = $harga_produk * $jumlah;
+    // Array harga produk
+    $ar_harga_produk = [
+        "TV" => 4200000,
+        "Kulkas" => 3100000,
+        "Mesin Cuci" => 3800000
+    ];
 
-        // Menampilkan hasil
-        echo "<h3>Nama Customer: $customer</h3>";
-        echo "<h3>Produk Pilihan: $produk</h3>";
-        echo "<h3>Jumlah Beli: $jumlah</h3>";
-        echo "<h3>Total Belanja: Rp " . number_format($total_belanja, 0, ',', '.') . "</h3>";
-    }
-    ?>
-</div>
+    // Hitung total harga
+    $total_harga = $ar_harga_produk[$produk] * $jumlah;
 
+    // Cetak hasilnya
+    echo "<h3>Hasil Belanja <br></h3>";
+    echo "Nama Customer : $customer <br>";
+    echo "Produk Pilihan : $produk <br>";
+    echo "Jumlah Beli : $jumlah pcs <br>";
+    echo "Total Belanja : Rp " . number_format($total_harga, 0, ',', '.') . "<br>";
+}
+?>
 
 </body>
 </html>

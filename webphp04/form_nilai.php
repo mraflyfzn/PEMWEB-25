@@ -81,5 +81,9 @@
      echo "Nilai Tugas/Praktikum : " . $_nilai_tugas . "<br>";
  }
  ?>
+
+<?php
+  include_once"daftar_nilai.php";
+?>
 </body>
 </html>
